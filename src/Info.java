@@ -88,7 +88,7 @@ public class Info extends JFrame {
 		Dimension windowSize = this.getSize();
 		int windowX = Math.max(0, (screenSize.width  - windowSize.width ) / 2);
 		int windowY = Math.max(0, (screenSize.height - windowSize.height) / 2);
-		this.setLocation(windowX+350, windowY);
+		this.setLocation(windowX-400, windowY);
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

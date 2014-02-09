@@ -94,7 +94,7 @@ public class Help extends JFrame {
 		Dimension windowSize = this.getSize();
 		int windowX = Math.max(0, (screenSize.width  - windowSize.width ) / 2);
 		int windowY = Math.max(0, (screenSize.height - windowSize.height) / 2);
-		this.setLocation(windowX+400, windowY);
+		this.setLocation(windowX-400, windowY);
 		
 		tabPane1 = new JPanel();
 		tabPane2 = new JPanel();
