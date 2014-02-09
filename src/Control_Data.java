@@ -238,6 +238,58 @@ public class Control_Data {
 		return data;
 	}
 	
+	public static String[] outputID3(String c_id) {
+
+		String sql = "select * from member where id=?";
+		String path = null;
+		String data[]=null;
+
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		FileOutputStream fos = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://" + Server.DBIP + ":3306/po_tweeter", "POMA", "9353");
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, c_id);
+			ResultSet rs = psmt.executeQuery();
+			rs.next();
+			
+			data=new String[6];
+			
+			data[0]=rs.getString("id");
+            data[1]=rs.getString("name");
+            data[2]=rs.getString("email"); 
+            data[3]=rs.getString("phone");
+            data[4]=rs.getString("pw"); 
+            data[5]=rs.getString("pw"); 
+          
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+			if (psmt != null) {
+				try {
+					psmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+		return data;
+	}
+	
 	public static boolean isSameID(String c_id) {
 		
 		Connection conn;
@@ -594,6 +646,205 @@ public class Control_Data {
 				}
 			}
 		}
+	}
+	
+	public static void changeData(String c_id,String c_pw, String c_name, String c_email, String c_phone, String path)
+	{				
+		Connection conn = null;
+		FileInputStream fis = null;
+		PreparedStatement psmt =null;
+		
+		try {
+			
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://" + Server.DBIP + ":3306/po_tweeter", "POMA", "9353");
+			
+			String sql = "update member set pw = ? where id =?";		
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1,c_pw); 
+			psmt.setString(2, c_id); 
+			psmt.executeUpdate();
+			
+			
+			sql = "update member set name=? where id=?";
+			psmt = conn.prepareStatement(sql); 
+			psmt.setString(1, c_name); 
+			psmt.setString(2, c_id); 
+			psmt.executeUpdate();
+			
+			sql = "update member set email=? where id=?";
+			psmt = conn.prepareStatement(sql); 
+			psmt.setString(1, c_email); 
+			psmt.setString(2, c_id); 
+			psmt.executeUpdate();
+			
+			sql = "update member set phone=? where id=?";
+			psmt = conn.prepareStatement(sql); 
+			psmt.setString(1, c_phone); 
+			psmt.setString(2, c_id); 
+			psmt.executeUpdate();
+			
+			sql = "update member set photo=? where id=?";
+			psmt = conn.prepareStatement(sql); 
+			fis = new FileInputStream(path);
+			psmt.setBinaryStream(1, fis);
+			psmt.setString(2, c_id); 
+			psmt.executeUpdate();
+
+						
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO 자동 생성된 catch 블록
+			e.printStackTrace();
+		} 
+		finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+			if (psmt != null) {
+				try {
+					psmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	/* DB File 입력 */
+	public static String inputSFile(String c_id, String c_f_name, String c_file ) {
+
+		String sql = "insert into file ( id, f_name, file) values (?, ?, ?)";
+		String path = null;
+
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		FileInputStream fis=null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://" + Server.DBIP + ":3306/po_tweeter", "POMA", "9353");
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, c_id);
+			psmt.setString(2, c_f_name);
+			fis = new FileInputStream(c_file);
+			psmt.setBinaryStream(3, fis);
+			psmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+			if (psmt != null) {
+				try {
+					psmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return path;
+	}
+	
+	/* DB File 출력 */
+	public static String outputSFile(String c_id, String c_f_name) {
+
+		String sql = "select * from file where id=? and f_name=?";
+		String path = null;
+
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		FileOutputStream fos = null;
+		InputStream is=null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://" + Server.DBIP + ":3306/po_tweeter", "POMA", "9353");
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, c_id);
+			psmt.setString(2, c_f_name);
+			ResultSet rs = psmt.executeQuery();
+			rs.last();
+			is = (InputStream) rs.getBinaryStream("file");
+			fos = new FileOutputStream("icon/data/"+c_f_name);
+			if(fos != null)
+				path = "icon/data/"+c_f_name;
+			byte[] b = new byte[BUFFER_SIZE];
+			int n;
+			while ((n = is.read(b)) > 0) {
+				fos.write(b, 0, n);
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+			if (psmt != null) {
+				try {
+					psmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+			if (fos != null) {
+				try {
+					fos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return path;
 	}
 }
 

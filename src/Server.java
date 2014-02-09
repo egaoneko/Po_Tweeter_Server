@@ -30,6 +30,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -277,6 +278,7 @@ public class Server extends JFrame {
 		private Vector user_vc;
 
 		private String Nickname = null;
+		private String IP=null;
 
 		/* 생성자 */
 		public UserInfo(Socket soc, Vector vc)
@@ -284,6 +286,7 @@ public class Server extends JFrame {
 			// 매개변수로 넘어온 자료 저장
 			this.user_socket = soc;
 			this.user_vc = vc;
+			IP = soc.getInetAddress().getHostAddress();
 
 			User_network();
 		}
@@ -415,11 +418,16 @@ public class Server extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == mntmTodayLog ) 
-			{
-				File file = new File("log/log"+Date.getdateD()+".txt");
-				
-				if(file.exists())
-					file.delete();
+			{				
+				int result = JOptionPane.showConfirmDialog(null, "If you press \"Yes\", you apply to cancel your membership and exit.","Member Leave",JOptionPane.YES_NO_OPTION);
+				if(result == JOptionPane.CLOSED_OPTION || result == JOptionPane.NO_OPTION ){
+					return;
+				} else if(result == JOptionPane.YES_OPTION){
+					File file = new File("log/log"+Date.getdateD()+".txt");
+					
+					if(file.exists())
+						file.delete();
+				}	
 			}
 		}
 	}
@@ -429,11 +437,16 @@ public class Server extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == mntmAllLog ) 
 			{
-				File file = new File("log");
-				File[] list = file.listFiles();
-				
-				for(int i=0; i<list.length;i++)
-					list[i].delete();	
+				int result = JOptionPane.showConfirmDialog(null, "If you press \"Yes\", you apply to cancel your membership and exit.","Member Leave",JOptionPane.YES_NO_OPTION);
+				if(result == JOptionPane.CLOSED_OPTION || result == JOptionPane.NO_OPTION ){
+					return;
+				} else if(result == JOptionPane.YES_OPTION){
+					File file = new File("log");
+					File[] list = file.listFiles();
+					
+					for(int i=0; i<list.length;i++)
+						list[i].delete();
+				}		
 			}
 		}
 	}
@@ -449,7 +462,12 @@ public class Server extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == mntmExit ) 
 			{
-				System.exit(0);
+				int result = JOptionPane.showConfirmDialog(null, "If you press \"Yes\", you exit.","Member Leave",JOptionPane.YES_NO_OPTION);
+				if(result == JOptionPane.CLOSED_OPTION || result == JOptionPane.NO_OPTION ){
+					return;
+				} else if(result == JOptionPane.YES_OPTION){
+					System.exit(0);
+				}
 			}
 		}
 	}
@@ -525,6 +543,7 @@ public class Server extends JFrame {
 			bw = new BufferedWriter(fw);
 			Document doc = txtArea.getDocument();
 			doc.insertString(doc.getLength(), s, null);
+			txtArea.setAutoscrolls(true);
 			setEndline();
 			bw.write(s);
 			bw.newLine();
