@@ -25,4 +25,5 @@
 * Server (Text Mode) - Linux 기반 서버 (다른 팀원이 제작, 소스코드 미공개)
 
 ### 발표자료
-<div style="text-align: center;"><iframe width="476" height="400" src="http://www.slideshare.net/slideshow/embed_code/31367344" marginwidth="0" marginheight="0" frameborder="0" scrolling="no"></iframe></div>
+
+* [Slide Share](http://www.slideshare.net/slideshow/embed_code/31367344)
